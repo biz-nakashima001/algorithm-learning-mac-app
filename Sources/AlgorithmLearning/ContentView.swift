@@ -27,9 +27,24 @@ struct ContentView: View {
     private var isComplete: Bool { stepIndex >= steps.count - 1 }
 
     var body: some View {
-        HStack(spacing: 0) {
-            sidebar
-            mainContent
+        GeometryReader { geometry in
+            Group {
+                if geometry.size.width < 700 {
+                    VStack(spacing: 0) {
+                        topBar(isCompact: true)
+                        compactAlgorithmPicker
+                        mainContent(isCompact: true)
+                    }
+                } else {
+                    HStack(spacing: 0) {
+                        sidebar
+                        VStack(spacing: 0) {
+                            topBar(isCompact: false)
+                            mainContent(isCompact: false)
+                        }
+                    }
+                }
+            }
         }
         .background(Palette.canvas)
         .foregroundStyle(Palette.ink)
@@ -101,26 +116,67 @@ struct ContentView: View {
         .padding(.horizontal, 13).padding(.bottom, 19)
     }
 
-    private var mainContent: some View {
+    private func mainContent(isCompact: Bool) -> some View {
         VStack(spacing: 0) {
-            topBar
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     intro
                     visualizationCard
-                    HStack(alignment: .top, spacing: 16) {
-                        explanationCard
-                        pseudocodeCard
+                    if isCompact {
+                        VStack(alignment: .leading, spacing: 16) {
+                            explanationCard
+                            pseudocodeCard
+                        }
+                    } else {
+                        HStack(alignment: .top, spacing: 16) {
+                            explanationCard
+                            pseudocodeCard
+                        }
                     }
                 }
-                .padding(.horizontal, 30).padding(.top, 25).padding(.bottom, 32)
+                .padding(.horizontal, isCompact ? 16 : 30)
+                .padding(.top, isCompact ? 16 : 25)
+                .padding(.bottom, 32)
                 .frame(maxWidth: 1050, alignment: .leading)
                 .frame(maxWidth: .infinity)
             }
         }
     }
 
-    private var topBar: some View {
+    private var compactAlgorithmPicker: some View {
+        Menu {
+            ForEach(Algorithm.allCases) { item in
+                Button {
+                    selected = item
+                } label: {
+                    if selected == item {
+                        Label(item.title(in: language), systemImage: "checkmark")
+                    } else {
+                        Text(item.title(in: language))
+                    }
+                }
+            }
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: selected.symbol).foregroundStyle(Palette.blue)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(selected.category(in: language))
+                        .font(.system(size: 9, weight: .bold)).foregroundStyle(Palette.muted)
+                    Text(selected.title(in: language))
+                        .font(.system(size: 14, weight: .semibold)).foregroundStyle(Palette.ink)
+                }
+                Spacer()
+                Image(systemName: "chevron.down").font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.muted)
+            }
+            .padding(.horizontal, 13).frame(height: 48)
+            .background(Palette.paper, in: RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Palette.line, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .padding(.horizontal, 16).padding(.vertical, 10)
+    }
+
+    private func topBar(isCompact: Bool) -> some View {
         HStack {
             HStack(spacing: 6) {
                 Circle().fill(Palette.mint).frame(width: 7, height: 7)
@@ -145,7 +201,6 @@ struct ContentView: View {
                     .padding(.horizontal, 12).frame(height: 32)
                     .background(Palette.paper, in: Capsule()).overlay(Capsule().stroke(Palette.line, lineWidth: 1))
             }
-            .menuStyle(.borderlessButton)
             Button(action: newExample) {
                 Label(CopyKey.newExample.text(in: language), systemImage: "arrow.clockwise")
                     .font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.ink)
@@ -153,7 +208,7 @@ struct ContentView: View {
                     .background(Palette.paper, in: Capsule()).overlay(Capsule().stroke(Palette.line, lineWidth: 1))
             }.buttonStyle(.plain)
         }
-        .padding(.horizontal, 30).frame(height: 60)
+        .padding(.horizontal, isCompact ? 14 : 30).frame(height: 60)
         .background(Palette.canvas.opacity(0.94))
         .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
     }

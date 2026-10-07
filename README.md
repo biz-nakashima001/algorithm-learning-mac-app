@@ -58,7 +58,7 @@ SwiftUI で作られた、アルゴリズムの動きを一手ずつ見て学ぶ
 
 ## 実行方法・必要環境
 
-- macOS 14 以降
+- macOS 14 以降、または iOS 17 以降
 - Swift 6 と SwiftUI を利用できる環境（Xcode 推奨）
 
 ### Xcode から実行
@@ -72,3 +72,7 @@ SwiftUI で作られた、アルゴリズムの動きを一手ずつ見て学ぶ
 ```sh
 swift run
 ```
+
+### iPhone 向けに実行
+
+`AlgorithmLearning.xcodeproj` を Xcode で開き、`LittleByLittleiOS` を選択します。iPhone シミュレーターで実行するか、Signing & Capabilities で自分の Personal Team を選んで接続中の iPhone に実行します。個人の Apple Account で端末テストができますが、プロビジョニングは7日ごとに更新が必要です。App Store などへの配布には Apple Developer Program への登録が必要です。iPhone ではアルゴリズム選択を画面上部のメニューにまとめ、説明カードを縦に表示します。

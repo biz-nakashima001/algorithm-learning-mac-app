@@ -1,0 +1,91 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		A00000000000000000000001 = {isa = PBXBuildFile; fileRef = B00000000000000000000001; };
+		A00000000000000000000002 = {isa = PBXBuildFile; fileRef = B00000000000000000000002; };
+		A00000000000000000000003 = {isa = PBXBuildFile; fileRef = B00000000000000000000003; };
+		A00000000000000000000004 = {isa = PBXBuildFile; fileRef = B00000000000000000000004; };
+		A00000000000000000000005 = {isa = PBXBuildFile; fileRef = B00000000000000000000005; };
+		B00000000000000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = App.swift; path = Sources/AlgorithmLearning/App.swift; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = Sources/AlgorithmLearning/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000003 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Algorithm.swift; path = Sources/AlgorithmLearning/Algorithm.swift; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdditionalSorting.swift; path = Sources/AlgorithmLearning/AdditionalSorting.swift; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000005 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Localization.swift; path = Sources/AlgorithmLearning/Localization.swift; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000006 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Little by Little.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C00000000000000000000001 = {isa = PBXGroup; children = (
+			B00000000000000000000001,
+			B00000000000000000000002,
+			B00000000000000000000003,
+			B00000000000000000000004,
+			B00000000000000000000005,
+			C00000000000000000000002,
+		); sourceTree = "<group>"; };
+		C00000000000000000000002 = {isa = PBXGroup; name = Products; children = (B00000000000000000000006,); sourceTree = "<group>"; };
+		D00000000000000000000001 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F00000000000000000000002;
+			buildPhases = (E00000000000000000000001, E00000000000000000000002, E00000000000000000000003,);
+			buildRules = ();
+			dependencies = ();
+			name = LittleByLittleiOS;
+			productName = "Little by Little";
+			productReference = B00000000000000000000006;
+			productType = "com.apple.product-type.application";
+		};
+		E00000000000000000000001 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001, A00000000000000000000002, A00000000000000000000003, A00000000000000000000004, A00000000000000000000005,); runOnlyForDeploymentPostprocessing = 0; };
+		E00000000000000000000002 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		E00000000000000000000003 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		E00000000000000000000004 = {
+			isa = PBXProject;
+			attributes = {BuildIndependentTargetsInParallel = 1; LastUpgradeCheck = 2700; TargetAttributes = {D00000000000000000000001 = {CreatedOnToolsVersion = 27.0; }; }; };
+			buildConfigurationList = F00000000000000000000001;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (ja, en, Base,);
+			mainGroup = C00000000000000000000001;
+			productRefGroup = C00000000000000000000002;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (D00000000000000000000001,);
+		};
+		F00000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (G00000000000000000000001, G00000000000000000000002,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		F00000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (H00000000000000000000001, H00000000000000000000002,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		G00000000000000000000001 = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; }; name = Debug; };
+		G00000000000000000000002 = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; }; name = Release; };
+		H00000000000000000000001 = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Little by Little";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.biznakashima.LittleByLittle.ios;
+				PRODUCT_NAME = "Little by Little";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			}; name = Debug; };
+		H00000000000000000000002 = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Little by Little";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.biznakashima.LittleByLittle.ios;
+				PRODUCT_NAME = "Little by Little";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			}; name = Release; };
+	};
+	rootObject = E00000000000000000000004;
+}
