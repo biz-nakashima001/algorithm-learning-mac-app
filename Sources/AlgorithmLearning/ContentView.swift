@@ -13,6 +13,7 @@ private enum Palette {
 }
 
 struct ContentView: View {
+    @AppStorage("preferredLanguage") private var savedLanguage = AppLanguage.japanese.rawValue
     @State private var selected: Algorithm = .bubbleSort
     @State private var data = [42, 17, 68, 23, 51, 9, 35, 60]
     @State private var target = 23
@@ -20,7 +21,8 @@ struct ContentView: View {
     @State private var isPlaying = false
     @State private var speed = 0.75
 
-    private var steps: [AlgorithmStep] { selected.makeSteps(values: data, target: target) }
+    private var language: AppLanguage { AppLanguage(rawValue: savedLanguage) ?? .japanese }
+    private var steps: [AlgorithmStep] { selected.makeSteps(values: data, target: target, language: language) }
     private var current: AlgorithmStep { steps[min(stepIndex, steps.count - 1)] }
     private var isComplete: Bool { stepIndex >= steps.count - 1 }
 
@@ -49,22 +51,22 @@ struct ContentView: View {
                     .background(Palette.blue.opacity(0.10), in: RoundedRectangle(cornerRadius: 11))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Little by Little").font(.system(size: 15, weight: .bold, design: .rounded))
-                    Text("ALGORITHM PLAYGROUND").font(.system(size: 8, weight: .bold)).tracking(1.2).foregroundStyle(Palette.muted)
+                    Text(CopyKey.appSubtitle.text(in: language)).font(.system(size: 8, weight: .bold)).tracking(1.2).foregroundStyle(Palette.muted)
                 }
             }
             .padding(.horizontal, 20).padding(.top, 28).padding(.bottom, 30)
 
-            Text("LEARN THE BASICS").font(.system(size: 9, weight: .bold)).tracking(1.2)
+            Text(CopyKey.sidebarSection.text(in: language)).font(.system(size: 9, weight: .bold)).tracking(1.2)
                 .foregroundStyle(Palette.muted).padding(.horizontal, 20).padding(.bottom, 10)
-            algorithmGroup("SORTING", items: [.bubbleSort, .insertionSort])
-            algorithmGroup("SEARCHING", items: [.linearSearch, .binarySearch])
+            algorithmGroup(CopyKey.sortingGroup.text(in: language), items: [.selectionSort, .bubbleSort, .insertionSort, .quickSort, .mergeSort])
+            algorithmGroup(CopyKey.searchingGroup.text(in: language), items: [.linearSearch, .binarySearch])
 
             Spacer()
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "lightbulb.fill").foregroundStyle(Palette.orange)
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("Small steps, big ideas").font(.system(size: 12, weight: .semibold))
-                    Text("Watch one decision at a time. That’s how algorithms become easy to understand.")
+                    Text(CopyKey.sidebarTipTitle.text(in: language)).font(.system(size: 12, weight: .semibold))
+                    Text(CopyKey.sidebarTipBody.text(in: language))
                         .font(.system(size: 11)).foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true).lineSpacing(3)
                 }
             }
@@ -78,11 +80,13 @@ struct ContentView: View {
 
     private func algorithmGroup(_ title: String, items: [Algorithm]) -> some View {
         VStack(alignment: .leading, spacing: 4) {
+            Text(title).font(.system(size: 9, weight: .bold)).tracking(1.1)
+                .foregroundStyle(Palette.muted).padding(.horizontal, 12).padding(.bottom, 2)
             ForEach(items) { item in
                 Button { selected = item } label: {
                     HStack(spacing: 11) {
                         Image(systemName: item.symbol).font(.system(size: 13, weight: .medium)).frame(width: 18)
-                        Text(item.title).font(.system(size: 13, weight: selected == item ? .semibold : .medium))
+                        Text(item.title(in: language)).font(.system(size: 13, weight: selected == item ? .semibold : .medium))
                         Spacer()
                         if selected == item { Circle().fill(Palette.blue).frame(width: 6, height: 6) }
                     }
@@ -120,11 +124,30 @@ struct ContentView: View {
         HStack {
             HStack(spacing: 6) {
                 Circle().fill(Palette.mint).frame(width: 7, height: 7)
-                Text("YOUR LEARNING SPACE").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(Palette.muted)
+                Text(CopyKey.workspace.text(in: language)).font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(Palette.muted)
             }
             Spacer()
+            Menu {
+                ForEach(AppLanguage.allCases) { choice in
+                    Button {
+                        savedLanguage = choice.rawValue
+                    } label: {
+                        if choice == language {
+                            Label(choice.displayName, systemImage: "checkmark")
+                        } else {
+                            Text(choice.displayName)
+                        }
+                    }
+                }
+            } label: {
+                Label(language.languageMenuTitle, systemImage: "globe")
+                    .font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.ink)
+                    .padding(.horizontal, 12).frame(height: 32)
+                    .background(Palette.paper, in: Capsule()).overlay(Capsule().stroke(Palette.line, lineWidth: 1))
+            }
+            .menuStyle(.borderlessButton)
             Button(action: newExample) {
-                Label("New example", systemImage: "arrow.clockwise")
+                Label(CopyKey.newExample.text(in: language), systemImage: "arrow.clockwise")
                     .font(.system(size: 11, weight: .semibold)).foregroundStyle(Palette.ink)
                     .padding(.horizontal, 13).frame(height: 32)
                     .background(Palette.paper, in: Capsule()).overlay(Capsule().stroke(Palette.line, lineWidth: 1))
@@ -139,11 +162,11 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
                 Image(systemName: selected.symbol).font(.system(size: 11, weight: .semibold))
-                Text(selected.category).font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text(selected.category(in: language)).font(.system(size: 9, weight: .bold)).tracking(1.2)
             }
             .foregroundStyle(Palette.blue)
-            Text(selected.title).font(.system(size: 30, weight: .bold, design: .rounded)).tracking(-0.7)
-            Text(selected.summary).font(.system(size: 13)).foregroundStyle(Palette.muted)
+            Text(selected.title(in: language)).font(.system(size: 30, weight: .bold, design: .rounded)).tracking(-0.7)
+            Text(selected.summary(in: language)).font(.system(size: 13)).foregroundStyle(Palette.muted)
         }
     }
 
@@ -151,15 +174,15 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(selected.isSearch ? "Find a value" : "Put the values in order")
+                    Text((selected.isSearch ? CopyKey.searchHeader : CopyKey.sortHeader).text(in: language))
                         .font(.system(size: 14, weight: .semibold))
-                    Text("Each tile is one value in the list").font(.system(size: 11)).foregroundStyle(Palette.muted)
+                    Text(CopyKey.listDescription.text(in: language)).font(.system(size: 11)).foregroundStyle(Palette.muted)
                 }
                 Spacer()
                 if selected.isSearch {
                     HStack(spacing: 8) {
-                        Text("TARGET").font(.system(size: 9, weight: .bold)).tracking(0.8).foregroundStyle(Palette.muted)
-                        TextField("Value", value: $target, format: .number)
+                        Text(CopyKey.targetLabel.text(in: language)).font(.system(size: 9, weight: .bold)).tracking(0.8).foregroundStyle(Palette.muted)
+                        TextField(CopyKey.targetLabel.text(in: language), value: $target, format: .number)
                             .textFieldStyle(.plain).font(.system(size: 13, weight: .semibold, design: .rounded))
                             .frame(width: 48).padding(.horizontal, 9).frame(height: 31)
                             .background(Palette.canvas, in: RoundedRectangle(cornerRadius: 8))
@@ -177,10 +200,10 @@ struct ContentView: View {
             .padding(.horizontal, 16).padding(.vertical, 5)
 
             HStack(spacing: 14) {
-                legend(Palette.blue, "Checking")
-                if !selected.isSearch { legend(Palette.mint, "In order") }
+                legend(Palette.blue, CopyKey.checkingLegend.text(in: language))
+                if !selected.isSearch { legend(Palette.mint, CopyKey.sortedLegend.text(in: language)) }
                 Spacer()
-                Text("\(current.comparisons) comparison\(current.comparisons == 1 ? "" : "s")")
+                Text(language.comparisonCount(current.comparisons))
                     .font(.system(size: 10, weight: .medium, design: .rounded)).foregroundStyle(Palette.muted)
             }
             .padding(.horizontal, 19).padding(.bottom, 15)
@@ -190,21 +213,21 @@ struct ContentView: View {
                 Button(action: rewind) {
                     Image(systemName: "backward.end.fill").font(.system(size: 10)).frame(width: 32, height: 32)
                         .background(Palette.canvas, in: Circle())
-                }.buttonStyle(.plain).help("Start over")
+                }.buttonStyle(.plain).help(CopyKey.restartHelp.text(in: language))
                 Button(action: togglePlayback) {
-                    Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
+                    Label((isPlaying ? CopyKey.pause : CopyKey.play).text(in: language), systemImage: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: 11, weight: .semibold)).padding(.horizontal, 14).frame(height: 32)
                         .foregroundStyle(.white).background(Palette.blue, in: Capsule())
                 }.buttonStyle(.plain)
                 Button(action: advance) {
-                    Label("Next", systemImage: "forward.fill").font(.system(size: 11, weight: .semibold))
+                    Label(CopyKey.next.text(in: language), systemImage: "forward.fill").font(.system(size: 11, weight: .semibold))
                         .padding(.horizontal, 13).frame(height: 32)
                         .background(Palette.canvas, in: Capsule())
                 }.buttonStyle(.plain).disabled(isComplete).opacity(isComplete ? 0.45 : 1)
                 Spacer()
-                Text("STEP \(stepIndex + 1) OF \(steps.count)")
+                Text(language.stepCount(stepIndex + 1, steps.count))
                     .font(.system(size: 9, weight: .bold, design: .rounded)).tracking(0.8).foregroundStyle(Palette.muted)
-                Slider(value: $speed, in: 0.35...1.5).frame(width: 74).help("Playback speed")
+                Slider(value: $speed, in: 0.35...1.5).frame(width: 74).help(CopyKey.playbackSpeed.text(in: language))
             }
             .padding(.horizontal, 17).padding(.vertical, 12)
         }
@@ -233,7 +256,7 @@ struct ContentView: View {
         }
         .frame(maxWidth: .infinity, alignment: .bottom)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Position \(index + 1), value \(value)\(isActive ? ", being checked" : "")")
+        .accessibilityLabel(language.positionLabel(index + 1, value: value, active: isActive))
     }
 
     private func legend(_ color: Color, _ label: String) -> some View {
@@ -244,14 +267,14 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 7) {
                 Image(systemName: "text.bubble.fill").foregroundStyle(Palette.orange)
-                Text("WHAT’S HAPPENING").font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(Palette.muted)
+                Text(CopyKey.explanationHeader.text(in: language)).font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(Palette.muted)
             }
             Text(current.message).font(.system(size: 13, weight: .medium)).lineSpacing(4).fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 7) {
-                Text("TIME").font(.system(size: 8, weight: .bold)).tracking(0.7).foregroundStyle(Palette.muted)
+                Text(CopyKey.timeComplexity.text(in: language)).font(.system(size: 8, weight: .bold)).tracking(0.7).foregroundStyle(Palette.muted)
                 Text(selected.bigO).font(.system(size: 11, weight: .bold, design: .rounded)).foregroundStyle(Palette.blue)
-                Text("· how the work grows as the list gets bigger")
-                    .font(.system(size: 9)).foregroundStyle(Palette.muted).lineLimit(1)
+                Text(CopyKey.complexityDescription.text(in: language))
+                    .font(.system(size: 9)).foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true)
             }
             .padding(.top, 4)
         }
@@ -264,10 +287,10 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 11) {
             HStack(spacing: 7) {
                 Image(systemName: "chevron.left.forwardslash.chevron.right").foregroundStyle(Palette.blue)
-                Text("THE IDEA IN CODE").font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(Palette.muted)
+                Text(CopyKey.pseudocodeHeader.text(in: language)).font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(Palette.muted)
             }
             VStack(alignment: .leading, spacing: 5) {
-                ForEach(Array(selected.pseudocode.enumerated()), id: \.offset) { index, line in
+                ForEach(Array(selected.pseudocode(in: language).enumerated()), id: \.offset) { index, line in
                     HStack(spacing: 8) {
                         RoundedRectangle(cornerRadius: 2).fill(index == current.line && stepIndex > 0 ? Palette.orange : .clear).frame(width: 3, height: 15)
                         Text(line).font(.system(size: 10, weight: index == current.line && stepIndex > 0 ? .semibold : .regular, design: .monospaced))
