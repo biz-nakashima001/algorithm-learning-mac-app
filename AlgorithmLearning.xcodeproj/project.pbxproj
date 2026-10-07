@@ -12,6 +12,7 @@
 		A00000000000000000000003 /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* Algorithm.swift */; };
 		A00000000000000000000004 /* AdditionalSorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000004 /* AdditionalSorting.swift */; };
 		A00000000000000000000005 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000005 /* Localization.swift */; };
+		A00000000000000000000006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000007 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		B00000000000000000000004 /* AdditionalSorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdditionalSorting.swift; path = Sources/AlgorithmLearning/AdditionalSorting.swift; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000005 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Localization.swift; path = Sources/AlgorithmLearning/Localization.swift; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000006 /* Little by Little.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Little by Little.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 				B00000000000000000000003 /* Algorithm.swift */,
 				B00000000000000000000004 /* AdditionalSorting.swift */,
 				B00000000000000000000005 /* Localization.swift */,
+				B00000000000000000000007 /* Assets.xcassets */,
 				C00000000000000000000002 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A00000000000000000000006 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +163,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3JGPGN9C4N;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -179,6 +184,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3JGPGN9C4N;
 				GENERATE_INFOPLIST_FILE = YES;
